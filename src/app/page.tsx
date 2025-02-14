@@ -1,113 +1,193 @@
-import Image from 'next/image'
-
-export default function Home() {
+"use client";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Input } from "@/components/ui/input";
+import Fuse from "fuse.js";
+import { Terminal, Info } from "lucide-react";
+import { useMemo, useState } from "react";
+interface DataType {
+  title: string;
+  description: {
+    short: string;
+    long: string;
+  };
+  url: string;
+  tags: string[];
+  updated: string;
+}
+const data: DataType[] = require("../../data.json");
+const newCalcTime = 24 * 60 * 60 * 1000;
+const fuse = new Fuse(data, {
+  keys: ["title", "description.short"],
+  threshold: 0.3,
+  distance: 100
+});
+function createLink(displayText: string, link: string) {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">src/app/page.tsx</code>
+    <a
+      href={link}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="font-bold hover:border-b-2 border-black"
+    >
+      {displayText}
+    </a>
+  );
+}
+
+function getTime() {
+  const UTCTime = new Date().getTime() + new Date().getTimezoneOffset() * 60000;
+  const ESTOffset = -5 * 60;
+  return UTCTime + ESTOffset * 60000;
+}
+
+export default function Page() {
+  const [age, setAge] = useState("");
+  const [price, setPrice] = useState("");
+  const [search, setSearch] = useState("");
+  const month = new Date(getTime()).getMonth() + 1,
+    day = new Date(getTime()).getDate();
+  const sortedData = useMemo(() => {
+    let sortData: DataType[] = [];
+    sortData =
+      search != "" ? fuse.search(search).map((result) => result.item) : data;
+    if (age === "18+") {
+      sortData = sortData.filter((item) => !item.tags.includes("18-"));
+    }
+    if (price !== "") {
+      sortData = sortData.filter((item) =>
+        price === "free"
+          ? item.tags.includes("free")
+          : item.tags.includes("paid")
+      );
+    }
+    return sortData.sort(
+      (a, b) => parseInt(b.updated, 10) - parseInt(a.updated, 10)
+    );
+  }, [age, price, search]);
+
+  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>): void => {
+    setSearch(event.target.value);
+  };
+
+  return (
+    <main>
+      <div className="flex flex-col items-center">
+        <div className="text-xl font-bold">I wish I knew</div>
+        <p className="text-sm">
+          (a collection of resources gathered and simplified)
         </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+      </div>
+      <div className="px-6 md:px-16">
+        {month === 12 && day > 0 && day <= 25 && (
+          <Alert>
+            <Terminal className="h-4 w-4" />
+            <AlertTitle>Advent of Code</AlertTitle>
+            <AlertDescription>
+              Day <span className="font-bold">{day}</span> of the Advent of Code
+              is live! Check it out here:{" "}
+              {createLink(
+                "https://adventofcode.com/",
+                "https://adventofcode.com"
+              )}
+            </AlertDescription>
+          </Alert>
+        )}
+      </div>
+      <div className="px-6 mt-6">
+        <div className="text-lg font-bold">I know I want</div>
+        <div className="flex space-x-2">
+          <Input
+            className="w-[80px] md:w-[300px]"
+            type="text"
+            placeholder="everything..."
+            onChange={handleSearch}
+          />
+          <Select onValueChange={setAge} value={age}>
+            <SelectTrigger className="w-[80px] md:w-[120px]">
+              <SelectValue placeholder="Age" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="18-">18-</SelectItem>
+              <SelectItem value="18+">18+</SelectItem>
+            </SelectContent>
+          </Select>
+          <Select onValueChange={setPrice} value={price}>
+            <SelectTrigger className="w-[80px] md:w-[120px]">
+              <SelectValue placeholder="Price" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="free">Free</SelectItem>
+              <SelectItem value="paid">Paid</SelectItem>
+            </SelectContent>
+          </Select>
+          <button
+            disabled={age == "" && price == ""}
+            onClick={() => {
+              setAge("");
+              setPrice("");
+            }}
           >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+            Clear
+          </button>
         </div>
       </div>
-
-      <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 before:lg:h-[360px] z-[-1]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className="mb-32 grid text-center lg:max-w-5xl lg:w-full lg:mb-0 lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Docs{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Learn{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Templates{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Explore the Next.js 13 playground.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Deploy{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
+      <ol className="p-6">
+        {sortedData.length == 0 && (
+          <>
+            <li>
+              no resource match your filters <b>yet</b>, new resources are being
+              added
+            </li>
+            <li>
+              can&apos;t wait? tweet{" "}
+              <code>
+                {createLink(
+                  `#iwishiknewmore`,
+                  `https://twitter.com/intent/post?text=add%20more%20resources%20to%20${
+                    age == "18+" ? "18%2B" : age
+                  }%20and%20${price}%20%0A%23iwishiknewmore`
+                )}
+              </code>
+            </li>
+          </>
+        )}
+        {price == "paid" && (
+          <span className="text-sm text-gray-800 flex space-x-1">
+            <Info className="h-4 w-4" />
+            <i>
+              resources with both free and paid tags, may have something behind
+              a paywall
+            </i>
+          </span>
+        )}
+        {sortedData.map((item) => (
+          <li className="mb-4" key={item.title}>
+            <div className="space-x-3">
+              {createLink(item.title, item.url)}
+              {Date.now() - parseInt(item.updated, 10) < newCalcTime && (
+                <span className="text-xs font-light bg-red-600 text-white p-1 rounded-full">
+                  NEW
+                </span>
+              )}
+            </div>
+            <p>{item.description.short}</p>
+            <div className="flex flex-wrap mt-2 text-gray-800 text-sm">
+              {item.tags.map((tag: string) => (
+                <span key={tag} className="bg-gray-200 px-2 py-1 rounded mr-2">
+                  {tag}
+                </span>
+              ))}
+            </div>
+          </li>
+        ))}
+      </ol>
     </main>
-  )
+  );
 }

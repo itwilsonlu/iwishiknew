@@ -1,0 +1,102 @@
+[
+    {
+        "title": "Github Education",
+        "description": {
+            "short": "get many perks from github for free or at a discount"
+        },
+        "url": "https://www.github.com/education",
+        "tags": [
+            "free"
+        ],
+        "updated": "1732927572010"
+    },
+    {
+        "title": "HackClub",
+        "description": {
+            "short": "get rewards for building projects (limited to age 18 and younger)"
+        },
+        "url": "https://highseas.hackclub.com",
+        "tags": [
+            "free",
+            "18-"
+        ],
+        "updated": "1732927572010"
+    },
+    {
+        "title": "Advent of Code",
+        "description": {
+            "short": "an advent calender full of small programming puzzles, with a new one unlocking every day"
+        },
+        "url": "https://adventofcode.com",
+        "tags": [
+            "free"
+        ],
+        "updated": "1733019958979"
+    },
+    {
+        "title": "CodeCrafters",
+        "description": {
+            "short": "create real world technologies commonly used in the industry"
+        },
+        "url": "https://codecrafters.io",
+        "tags": [
+            "free", "paid"
+        ],
+        "updated": "1733062828853"
+    },
+    {
+        "title": "The Odin Project",
+        "description": {
+            "short": "learn web development for free"
+        },
+        "url": "https://theodinproject.com",
+        "tags": [
+            "free"
+        ],
+        "updated": "1733063869553"
+    },
+    {
+        "title": "Forage",
+        "description": {
+            "short": "get free access to virtual work experiences that you can complete on your own time"
+        },
+        "url": "https://www.theforage.com/",
+        "tags": [
+            "free"
+        ],
+        "updated": "1733097348303"
+    }, 
+    {
+        "title": "LeetCode",
+        "description": {
+            "short": "practice coding, prepare for interviews, and get hired"
+        },
+        "url": "https://leetcode.com",
+        "tags": [
+            "free", "paid"
+        ],
+        "updated": "1733111502498"
+    },
+    {
+        "title": "Neetcode",
+        "description": {
+            "short": "prepare for coding interviews with free resources (alternative to Leetcode)"
+        },
+        "url": "https://neetcode.io",
+        "tags": [
+            "free"
+        ],
+        "updated": "1733111564543"
+    },
+    {
+        "title": "Simplify Summer Internship List",
+        "description": {
+            "short": "find a summer internship with a Github repository created by Pitt CSC & Simplify that updates frequently"
+        },
+        "url": "https://github.com/SimplifyJobs/Summer2025-Internships",
+        "tags": [
+            "free"
+        ],
+        "updated": "1733286082535"
+    }
+]
