@@ -8,6 +8,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import Fuse from "fuse.js";
 import { Terminal, Info } from "lucide-react";
 import { useMemo, useState } from "react";
@@ -26,7 +27,7 @@ const newCalcTime = 24 * 60 * 60 * 1000;
 const fuse = new Fuse(data, {
   keys: ["title", "description.short"],
   threshold: 0.3,
-  distance: 100
+  distance: 100,
 });
 function createLink(displayText: string, link: string) {
   return (
@@ -104,11 +105,13 @@ export default function Page() {
         <div className="text-lg font-bold">I know I want</div>
         <div className="flex space-x-2">
           <Input
-            className="w-[80px] md:w-[300px]"
+            className="max-w-1/2"
             type="text"
             placeholder="everything..."
+            value={search}
             onChange={handleSearch}
           />
+          {/* <div className="flex flex-row space-x-2 pt-3"> */}
           <Select onValueChange={setAge} value={age}>
             <SelectTrigger className="w-[80px] md:w-[120px]">
               <SelectValue placeholder="Age" />
@@ -127,34 +130,31 @@ export default function Page() {
               <SelectItem value="paid">Paid</SelectItem>
             </SelectContent>
           </Select>
-          <button
-            disabled={age == "" && price == ""}
+          <Button
+            variant="secondary"
+            disabled={search == "" && age == "" && price == ""}
             onClick={() => {
+              setSearch("");
               setAge("");
               setPrice("");
             }}
           >
             Clear
-          </button>
+          </Button>
+          {/* </div> */}
         </div>
       </div>
       <ol className="p-6">
         {sortedData.length == 0 && (
           <>
             <li>
-              no resource match your filters <b>yet</b>, new resources are being
+              no resource match your filters <b>yet</b>, new resources will be
               added
             </li>
             <li>
-              can&apos;t wait? tweet{" "}
-              <code>
-                {createLink(
-                  `#iwishiknewmore`,
-                  `https://twitter.com/intent/post?text=add%20more%20resources%20to%20${
-                    age == "18+" ? "18%2B" : age
-                  }%20and%20${price}%20%0A%23iwishiknewmore`
-                )}
-              </code>
+              got a resource in mind to add that fit this exact search? submit a
+              pull request or an issue{" "}
+              {createLink("here", "https://google.com")}
             </li>
           </>
         )}
