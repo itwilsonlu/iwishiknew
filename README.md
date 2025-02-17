@@ -43,6 +43,4 @@ the app structure is the following:
 Something I faced was trying to figure out how to best do fuzzy search, I have implement a fuzzy search before in python using levenshtein distance for a FAQ bot, but I want to make it both search both the title and as well as the short description, with this, I came to [`fuse.js`](https://www.fusejs.io/), while implementing it, I came to a realization when adding some sort of search and then reloading the page, will return a different results, ending up having to add settings to it. 
 
 ## future
-I plan to write my own fuzzy search that will end up using popularity stats to it. I plan to add a database that will track stats of the link, based on clicks, 
-
-## faq
+I plan to write my own fuzzy search that will end up using popularity stats to it. I plan to add a database that will track stats of the link, based on clicks
