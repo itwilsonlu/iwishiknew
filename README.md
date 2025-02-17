@@ -7,7 +7,7 @@ There are a handful of resources that I added on, I wish I knew before the deadl
 
 ## demo
 check all the live resources here: [iwishiknew website](https://iwishiknew.vercel.app/)  
-
+<img src="image.png" alt="image of website" width="300" height="200">
 
 ## looking to contribute or run locally?
 - clone repo from github
@@ -43,4 +43,18 @@ the app structure is the following:
 Something I faced was trying to figure out how to best do fuzzy search, I have implement a fuzzy search before in python using levenshtein distance for a FAQ bot, but I want to make it both search both the title and as well as the short description, with this, I came to [`fuse.js`](https://www.fusejs.io/), while implementing it, I came to a realization when adding some sort of search and then reloading the page, will return a different results, ending up having to add settings to it. 
 
 ## future
-I plan to write my own fuzzy search that will end up using popularity stats to it. I plan to add a database that will track stats of the link, based on clicks
+- [ ] better fuse.js logic in searching 
+- [ ] add more resources and add a default pull request to add resources
+- [ ] add videos resources such as MIT free courses, introducing a new filter (video)
+- [ ] connect to a database [Supabase](https://supabase.com/) to do clicks and filter based on popularity
+    - this will require a session system, to limit clicks
+
+## faq and more
+no frequently asked question yet, will be updated soon
+currently there are 9 resources total as of now
+
+## ai info [^1]
+I attest that I did NOT use ChatGPT or any other automated writing system for ANY
+portion of this assignment.
+
+[^1]: class
