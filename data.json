@@ -98,5 +98,14 @@
             "free"
         ],
         "updated": "1733286082535"
+    },
+    {
+        "title": "Developer Roadmap | roadmap.sh",
+        "description": {
+            "short": "a collection of roadmaps that helps developer with whichever path they might want to take"
+        },
+        "url": "https://roadmap.sh",
+        "tags": ["free", "paid"],
+        "updated": "1739845167243"
     }
 ]
