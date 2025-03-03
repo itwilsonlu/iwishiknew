@@ -53,10 +53,4 @@ Something I faced was trying to figure out how to best do fuzzy search, I have i
 
 ## faq and more
 no frequently asked question yet, will be updated soon
-currently there are 9 resources total as of now
-
-## ai info [^1]
-I attest that I did NOT use ChatGPT or any other automated writing system for ANY
-portion of this assignment.
-
-[^1]: class
+currently there are 10 resources total as of now

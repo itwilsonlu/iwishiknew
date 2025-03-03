@@ -154,7 +154,10 @@ export default function Page() {
             <li>
               got a resource in mind to add that fit this exact search? submit a
               pull request or an issue{" "}
-              {createLink("here", "https://github.com/itwilsonlu/iwishiknew/pulls")}
+              {createLink(
+                "here",
+                "https://github.com/itwilsonlu/iwishiknew/pulls"
+              )}
             </li>
           </>
         )}
