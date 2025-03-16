@@ -20,7 +20,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>{children}</body>
       {SCRIPT_SRC && SCRIPT_ID && (
-        <Script defer src={SCRIPT_SRC} data-website-id={SCRIPT_ID}></Script>
+        <Script defer src={SCRIPT_SRC} data-website-id={SCRIPT_ID}/>
       )}
     </html>
   );

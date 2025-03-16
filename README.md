@@ -7,7 +7,7 @@ There are a handful of resources that I added on, I wish I knew before the deadl
 
 ## demo
 check all the live resources here: [iwishiknew website](https://iwishiknew.vercel.app/)  
-<img src="image.png" alt="image of website" width="300" height="200">
+<img src="preview.png" alt="image of iwishiknew website" width="300" height="200">
 
 ## looking to contribute or run locally?
 - clone repo from github
@@ -49,8 +49,5 @@ Something I faced was trying to figure out how to best do fuzzy search, I have i
 - [ ] connect to a database [Supabase](https://supabase.com/) to do clicks and filter based on popularity
     - this will require a session system, to limit clicks
 - [ ] post on linkedin and create blog post
-- [ ] create an qr code that can be shown to people
+- [ ] create an qr code that can be shown to people to share around
 
-## faq and more
-no frequently asked question yet, will be updated soon
-currently there are 10 resources total as of now
