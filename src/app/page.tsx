@@ -22,7 +22,7 @@ interface DataType {
   tags: string[];
   updated: string;
 }
-const data: DataType[] = require("../../data.json");
+const data: DataType[] = require("@/data/web.json");
 const newCalcTime = 24 * 60 * 60 * 1000;
 const fuse = new Fuse(data, {
   keys: ["title", "description.short"],
@@ -103,45 +103,45 @@ export default function Page() {
       </div>
       <div className="px-6 mt-6">
         <div className="text-lg font-bold">I know I want</div>
-        <div className="flex space-x-2">
+        <div className="flex space-x-2 space-y-2 md:space-y-0 flex-col md:flex-row">
           <Input
-            className="max-w-1/2"
+            className="w-full py-5 md:max-w-1/2"
             type="text"
             placeholder="everything..."
             value={search}
             onChange={handleSearch}
           />
-          {/* <div className="flex flex-row space-x-2 pt-3"> */}
-          <Select onValueChange={setAge} value={age}>
-            <SelectTrigger className="w-[80px] md:w-[120px]">
-              <SelectValue placeholder="Age" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="18-">18-</SelectItem>
-              <SelectItem value="18+">18+</SelectItem>
-            </SelectContent>
-          </Select>
-          <Select onValueChange={setPrice} value={price}>
-            <SelectTrigger className="w-[80px] md:w-[120px]">
-              <SelectValue placeholder="Price" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="free">Free</SelectItem>
-              <SelectItem value="paid">Paid</SelectItem>
-            </SelectContent>
-          </Select>
-          <Button
-            variant="secondary"
-            disabled={search == "" && age == "" && price == ""}
-            onClick={() => {
-              setSearch("");
-              setAge("");
-              setPrice("");
-            }}
-          >
-            Clear
-          </Button>
-          {/* </div> */}
+          <div className="flex flex-row space-x-2">
+            <Select onValueChange={setAge} value={age}>
+              <SelectTrigger className="w-[80px] md:w-[120px]">
+                <SelectValue placeholder="Age" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="18-">18-</SelectItem>
+                <SelectItem value="18+">18+</SelectItem>
+              </SelectContent>
+            </Select>
+            <Select onValueChange={setPrice} value={price}>
+              <SelectTrigger className="w-[80px] md:w-[120px]">
+                <SelectValue placeholder="Price" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="free">Free</SelectItem>
+                <SelectItem value="paid">Paid</SelectItem>
+              </SelectContent>
+            </Select>
+            <Button
+              variant="secondary"
+              disabled={search == "" && age == "" && price == ""}
+              onClick={() => {
+                setSearch("");
+                setAge("");
+                setPrice("");
+              }}
+            >
+              Clear
+            </Button>
+          </div>
         </div>
       </div>
       <ol className="p-6">
