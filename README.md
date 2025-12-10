@@ -39,11 +39,7 @@ If you are looking into seeing all the resources in this repo, check out `src/we
 the app structure is the following:
 - `src/app/page.tsx` contain all the main components to load and list the items, as well as some components that create links
 
-## reflection
-Something I faced was trying to figure out how to best do fuzzy search, I have implement a fuzzy search before in python using levenshtein distance for a FAQ bot, but I want to make it both search both the title and as well as the short description, with this, I came to [`fuse.js`](https://www.fusejs.io/), while implementing it, I came to a realization when adding some sort of search and then reloading the page, will return a different results, ending up having to add settings to it. 
-
 ## future
-- [ ] better fuse.js logic in searching 
 - [ ] add more resources and add a default pull request to add resources
 - [ ] add videos resources such as MIT free courses, introducing a new filter (video)
 - [ ] connect to a database [Supabase](https://supabase.com/) to do clicks and filter based on popularity

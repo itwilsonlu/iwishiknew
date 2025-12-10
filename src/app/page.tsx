@@ -10,34 +10,39 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import Fuse from "fuse.js";
-import { Terminal, Info } from "lucide-react";
+import { Terminal, Info, ArrowUpRight } from "lucide-react";
 import { useMemo, useState } from "react";
 interface DataType {
   title: string;
-  description: {
-    short: string;
-    long: string;
-  };
+  description: string;
   url: string;
   tags: string[];
   updated: string;
+  score: number;
 }
 const data: DataType[] = require("@/data/web.json");
 const newCalcTime = 24 * 60 * 60 * 1000;
 const fuse = new Fuse(data, {
-  keys: ["title", "description.short"],
-  threshold: 0.3,
-  distance: 100,
+  keys: [
+    { name: "title", weight: 0.7 },
+    {
+      name: "description",
+      weight: 0.3,
+    },
+  ],
+  includeScore: true,
 });
+
 function createLink(displayText: string, link: string) {
   return (
     <a
       href={link}
       target="_blank"
       rel="noopener noreferrer"
-      className="font-bold hover:border-b-2 border-black"
+      className="inline-flex items-center gap-1.5 font-semibold text-foreground relative after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-foreground after:transition-all hover:after:w-full group"
     >
       {displayText}
+      <ArrowUpRight className="hidden group-hover:block w-4 h-4 opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />
     </a>
   );
 }
@@ -55,9 +60,7 @@ export default function Page() {
   const month = new Date(getTime()).getMonth() + 1,
     day = new Date(getTime()).getDate();
   const sortedData = useMemo(() => {
-    let sortData: DataType[] = [];
-    sortData =
-      search != "" ? fuse.search(search).map((result) => result.item) : data;
+    let sortData: DataType[] = data;
     if (age === "18+") {
       sortData = sortData.filter((item) => !item.tags.includes("18-"));
     }
@@ -67,6 +70,11 @@ export default function Page() {
           ? item.tags.includes("free")
           : item.tags.includes("paid")
       );
+    }
+    if (search !== "") {
+      const searchResults = fuse.search(search);
+      const searchTitles = new Set(searchResults.map((r) => r.item.title));
+      sortData = sortData.filter((item) => searchTitles.has(item.title));
     }
     return sortData.sort(
       (a, b) => parseInt(b.updated, 10) - parseInt(a.updated, 10)
@@ -78,61 +86,42 @@ export default function Page() {
   };
 
   return (
-    <main>
-      <div className="flex flex-col items-center">
-        <div className="text-xl font-bold">I wish I knew</div>
-        <p className="text-sm">
-          (a collection of resources gathered and simplified)
-        </p>
-      </div>
-      <div className="px-6 md:px-16">
-        {month === 12 && day > 0 && day <= 25 && (
-          <Alert>
+    <main className="min-h-screen">
+      <div className="max-w-3xl mx-auto px-6 py-16">
+        <header className="mb-8">
+          <h1 className="text-4xl font-light tracking-tight mb-2">
+            I wish I knew
+          </h1>
+          <p className="text-sm text-muted-foreground">
+            curated resources, simplified
+          </p>
+        </header>
+
+        {month === 12 && day > 0 && day <= 12 && (
+          <Alert className="mb-8">
             <Terminal className="h-4 w-4" />
             <AlertTitle>Advent of Code</AlertTitle>
             <AlertDescription>
-              Day <span className="font-bold">{day}</span> of the Advent of Code
-              is live! Check it out here:{" "}
-              {createLink(
-                "https://adventofcode.com/",
-                "https://adventofcode.com"
-              )}
+              this year's advent of code challenge is only 12 days.
+              Day {day} is live:{" "}
+              {createLink("join here", "https://adventofcode.com")}
             </AlertDescription>
           </Alert>
         )}
-      </div>
-      <div className="px-6 mt-6">
-        <div className="text-lg font-bold">I know I want</div>
-        <div className="flex space-x-2 space-y-2 md:space-y-0 flex-col md:flex-row">
-          <Input
-            className="w-full py-5 md:max-w-1/2"
-            type="text"
-            placeholder="everything..."
-            value={search}
-            onChange={handleSearch}
-          />
-          <div className="flex flex-row space-x-2">
-            <Select onValueChange={setAge} value={age}>
-              <SelectTrigger className="w-[80px] md:w-[120px]">
-                <SelectValue placeholder="Age" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="18-">18-</SelectItem>
-                <SelectItem value="18+">18+</SelectItem>
-              </SelectContent>
-            </Select>
-            <Select onValueChange={setPrice} value={price}>
-              <SelectTrigger className="w-[80px] md:w-[120px]">
-                <SelectValue placeholder="Price" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="free">Free</SelectItem>
-                <SelectItem value="paid">Paid</SelectItem>
-              </SelectContent>
-            </Select>
+
+        <section className="mb-8 space-y-3">
+          <div className="flex gap-2">
+            <Input
+              type="text"
+              placeholder="Search..."
+              value={search}
+              onChange={handleSearch}
+              className="flex-1"
+            />
             <Button
-              variant="secondary"
-              disabled={search == "" && age == "" && price == ""}
+              variant="outline"
+              size="default"
+              disabled={search === "" && age === "" && price === ""}
               onClick={() => {
                 setSearch("");
                 setAge("");
@@ -142,55 +131,92 @@ export default function Page() {
               Clear
             </Button>
           </div>
-        </div>
-      </div>
-      <ol className="p-6">
-        {sortedData.length == 0 && (
-          <>
-            <li>
-              no resource match your filters <b>yet</b>, new resources will be
-              added
-            </li>
-            <li>
-              got a resource in mind to add that fit this exact search? submit a
-              pull request or an issue{" "}
+          <div className="flex gap-2">
+            <Select onValueChange={setAge} value={age}>
+              <SelectTrigger className="w-28">
+                <SelectValue placeholder="Age" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="18-">18-</SelectItem>
+                <SelectItem value="18+">18+</SelectItem>
+              </SelectContent>
+            </Select>
+            <Select onValueChange={setPrice} value={price}>
+              <SelectTrigger className="w-28">
+                <SelectValue placeholder="Price" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="free">Free</SelectItem>
+                <SelectItem value="paid">Paid</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </section>
+
+        {price === "paid" && sortedData.length > 0 && (
+          <Alert className="mb-8">
+            <Info className="h-4 w-4" />
+            <AlertDescription>
+              Resources with both tags may include paywalled content
+            </AlertDescription>
+          </Alert>
+        )}
+
+        {sortedData.length === 0 && (
+          <div className="text-muted-foreground">
+            <p>No resources match your filters yet.</p>
+            <p className="text-sm">
+              Want to add one?{" "}
               {createLink(
-                "here",
+                "Submit a PR",
                 "https://github.com/itwilsonlu/iwishiknew/pulls"
               )}
-            </li>
-          </>
+            </p>
+          </div>
         )}
-        {price == "paid" && (
-          <span className="text-sm text-gray-800 flex space-x-1">
-            <Info className="h-4 w-4" />
-            <i>
-              resources with both free and paid tags, may have something behind
-              a paywall
-            </i>
-          </span>
-        )}
-        {sortedData.map((item) => (
-          <li className="mb-4" key={item.title}>
-            <div className="space-x-3">
-              {createLink(item.title, item.url)}
-              {Date.now() - parseInt(item.updated, 10) < newCalcTime && (
-                <span className="text-xs font-light bg-red-600 text-white p-1 rounded-full">
-                  NEW
-                </span>
-              )}
-            </div>
-            <p>{item.description.short}</p>
-            <div className="flex flex-wrap mt-2 text-gray-800 text-sm">
-              {item.tags.map((tag: string) => (
-                <span key={tag} className="bg-gray-200 px-2 py-1 rounded mr-2">
-                  {tag}
-                </span>
-              ))}
-            </div>
-          </li>
-        ))}
-      </ol>
+
+        <div className="space-y-8">
+          {sortedData.map((item) => {
+            const isNew = Date.now() - parseInt(item.updated, 10) < newCalcTime;
+            return (
+              <article key={item.title} className="group relative">
+                <div className="flex items-start gap-4">
+                  <div
+                    className={`w-1.5 h-1.5 rounded-full ${
+                      isNew ? "bg-orange-500" : "bg-foreground"
+                    } mt-2 opacity-40 group-hover:opacity-100 transition-opacity`}
+                  />
+                  <div className="flex-1 space-y-2">
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <h2 className="text-lg font-medium">
+                        {createLink(item.title, item.url)}
+                      </h2>
+                      {isNew && (
+                        <span className="text-xs font-semibold bg-orange-500 text-white px-2.5 py-1 rounded-full">
+                          new
+                        </span>
+                      )}
+                    </div>
+                    <p className="text-sm text-muted-foreground leading-relaxed">
+                      {item.description}
+                    </p>
+                    <div className="flex flex-wrap gap-2 pt-1">
+                      {item.tags.map((tag: string) => (
+                        <span
+                          key={tag}
+                          className="text-xs px-2 py-1 border rounded-sm text-muted-foreground"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </article>
+            );
+          })}
+        </div>
+      </div>
     </main>
   );
 }

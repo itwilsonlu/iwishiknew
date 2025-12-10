@@ -1,9 +1,7 @@
 [
     {
         "title": "Github Education",
-        "description": {
-            "short": "get many perks from github for free or at a discount"
-        },
+        "description": "get many perks from github for free or at a discount",
         "url": "https://www.github.com/education",
         "tags": [
             "free"
@@ -12,9 +10,7 @@
     },
     {
         "title": "HackClub",
-        "description": {
-            "short": "get rewards for building projects (limited to age 18 and younger)"
-        },
+        "description": "get rewards for building projects (limited to age 18 and younger)",
         "url": "https://highseas.hackclub.com",
         "tags": [
             "free",
@@ -24,9 +20,7 @@
     },
     {
         "title": "Advent of Code",
-        "description": {
-            "short": "an advent calender full of small programming puzzles, with a new one unlocking every day"
-        },
+        "description": "an advent calender full of small programming puzzles, with a new one unlocking every day",
         "url": "https://adventofcode.com",
         "tags": [
             "free"
@@ -35,20 +29,17 @@
     },
     {
         "title": "CodeCrafters",
-        "description": {
-            "short": "create real world technologies commonly used in the industry"
-        },
+        "description": "create real world technologies commonly used in the industry",
         "url": "https://codecrafters.io",
         "tags": [
-            "free", "paid"
+            "free",
+            "paid"
         ],
         "updated": "1733062828853"
     },
     {
         "title": "The Odin Project",
-        "description": {
-            "short": "learn web development for free"
-        },
+        "description": "learn web development for free",
         "url": "https://theodinproject.com",
         "tags": [
             "free"
@@ -57,31 +48,26 @@
     },
     {
         "title": "Forage",
-        "description": {
-            "short": "get free access to virtual work experiences that you can complete on your own time"
-        },
+        "description": "get free access to virtual work experiences that you can complete on your own time",
         "url": "https://www.theforage.com/",
         "tags": [
             "free"
         ],
         "updated": "1733097348303"
-    }, 
+    },
     {
         "title": "LeetCode",
-        "description": {
-            "short": "practice coding, prepare for interviews, and get hired"
-        },
+        "description": "practice coding, prepare for interviews, and get hired",
         "url": "https://leetcode.com",
         "tags": [
-            "free", "paid"
+            "free",
+            "paid"
         ],
         "updated": "1733111502498"
     },
     {
         "title": "Neetcode",
-        "description": {
-            "short": "prepare for coding interviews with free resources (alternative to Leetcode)"
-        },
+        "description": "prepare for coding interviews with free resources (alternative to Leetcode)",
         "url": "https://neetcode.io",
         "tags": [
             "free"
@@ -90,9 +76,7 @@
     },
     {
         "title": "Simplify Summer Internship List",
-        "description": {
-            "short": "find a summer internship with a Github repository created by Pitt CSC & Simplify that updates frequently"
-        },
+        "description": "find a summer internship with a Github repository created by Pitt CSC & Simplify that updates frequently",
         "url": "https://github.com/SimplifyJobs/Summer2025-Internships",
         "tags": [
             "free"
@@ -101,11 +85,51 @@
     },
     {
         "title": "Developer Roadmap | roadmap.sh",
-        "description": {
-            "short": "a collection of roadmaps that helps developer with whichever path they might want to take"
-        },
+        "description": "a collection of roadmaps that helps developer with whichever path they might want to take",
         "url": "https://roadmap.sh",
-        "tags": ["free", "paid"],
+        "tags": [
+            "free",
+            "paid"
+        ],
         "updated": "1739845167243"
+    },
+    {
+        "title": "Headstarter",
+        "description": "a paid platform that helps early-career software engineers get more interviews and job offers through real-world projects, mentorship, and direct referrals to hiring partners",
+        "url": "https://headstarter.co",
+        "tags": [
+            "paid"
+        ],
+        "updated": "1748229310000"
+    },
+    {
+        "title": "Hugging Face",
+        "description": "central hub for machine learning models, datasets, and collaborative spaces with state-of-the-art transformers and diffusion models",
+        "url": "https://huggingface.co",
+        "tags": [
+            "free",
+            "ai"
+        ],
+        "updated": "1765472400000"
+    },
+    {
+        "title": "Kaggle",
+        "description": "machine learning competitions, datasets, and courses with hands-on projects to build your portfolio",
+        "url": "https://www.kaggle.com",
+        "tags": [
+            "free",
+            "ai"
+        ],
+        "updated": "1765472400000"
+    },
+    {
+        "title": "Stanford CS224N: NLP with Deep Learning",
+        "description": "free university course on natural language processing fundamentals and neural networks taught by leading researchers",
+        "url": "https://web.stanford.edu/class/cs224n/",
+        "tags": [
+            "free",
+            "ai"
+        ],
+        "updated": "1765472400000"
     }
 ]

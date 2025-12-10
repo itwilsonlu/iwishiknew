@@ -5,6 +5,7 @@ import Script from "next/script";
 
 const inter = Inter({ subsets: ["latin"] });
 const { SCRIPT_ID, SCRIPT_SRC } = process.env;
+
 export const metadata: Metadata = {
   title: "I wish I knew",
   description:
