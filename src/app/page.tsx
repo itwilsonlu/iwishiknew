@@ -18,7 +18,6 @@ interface DataType {
   url: string;
   tags: string[];
   updated: string;
-  score: number;
 }
 const data: DataType[] = require("@/data/web.json");
 const newCalcTime = 24 * 60 * 60 * 1000;
@@ -30,7 +29,6 @@ const fuse = new Fuse(data, {
       weight: 0.3,
     },
   ],
-  includeScore: true,
 });
 
 function createLink(displayText: string, link: string) {
@@ -100,11 +98,23 @@ export default function Page() {
         {month === 12 && day > 0 && day <= 12 && (
           <Alert className="mb-8">
             <Terminal className="h-4 w-4" />
-            <AlertTitle>Advent of Code</AlertTitle>
+            <AlertTitle>
+              Advent of Code{" "}
+              <strong className="text-red-700">
+                ({12 - day} day{12 - day !== 1 ? "s" : ""} left)
+              </strong>
+            </AlertTitle>
             <AlertDescription>
-              this year's advent of code challenge is only 12 days.
-              Day {day} is live:{" "}
-              {createLink("join here", "https://adventofcode.com")}
+              <p>
+                this year's advent of code challenge is only <strong>12</strong>{" "}
+                days
+              </p>
+              <p>
+                {createLink(
+                  `attempt day ${day} puzzle`,
+                  `https://adventofcode.com/2025/day/${day}`
+                )}
+              </p>
             </AlertDescription>
           </Alert>
         )}
