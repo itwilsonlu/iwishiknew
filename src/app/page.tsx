@@ -136,7 +136,7 @@ export default function Page() {
         )}
 
         <section className="mb-8 space-y-3">
-          <div className="flex gap-2">
+          {/* <div className="flex gap-2">
             <Input
               type="text"
               placeholder="Search..."
@@ -157,7 +157,7 @@ export default function Page() {
             >
               Clear
             </Button>
-          </div>
+          </div> */}
           <div className="flex gap-2">
             <Select onValueChange={setAge} value={age}>
               <SelectTrigger className="w-28">
