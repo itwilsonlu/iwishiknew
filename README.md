@@ -44,6 +44,5 @@ the app structure is the following:
 - [ ] add videos resources such as MIT free courses, introducing a new filter (video)
 - [ ] connect to a database [Supabase](https://supabase.com/) to do clicks and filter based on popularity
     - this will require a session system, to limit clicks
-- [ ] post on linkedin and create blog post
 - [ ] create an qr code that can be shown to people to share around
 
