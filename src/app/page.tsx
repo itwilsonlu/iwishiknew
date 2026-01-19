@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import Fuse from "fuse.js";
+import Fuse, { IFuseOptions } from "fuse.js";
 import { Terminal, Info, ArrowUpRight } from "lucide-react";
 import { useMemo, useState } from "react";
 interface DataType {
@@ -21,17 +21,15 @@ interface DataType {
 }
 const data: DataType[] = require("@/data/web.json");
 const newCalcTime = 24 * 60 * 60 * 1000;
-const fuse = new Fuse(data, {
+const fuseOptions: IFuseOptions<DataType> = {
   keys: [
-    { name: "title", weight: 0.7 },
-    {
-      name: "description",
-      weight: 0.3,
-    },
+    { name: "title", weight: 0.6 },
+    { name: "description", weight: 0.1 },
   ],
-  includeScore: true,
-  threshold: 0.3,
-});
+  threshold: 0.25,
+  ignoreLocation: true,
+  minMatchCharLength: 2,
+};
 
 function createLink(displayText: string, link: string) {
   return (
@@ -60,25 +58,38 @@ export default function Page() {
   const month = new Date(getTime()).getMonth() + 1,
     day = new Date(getTime()).getDate();
   const sortedData = useMemo(() => {
-    let sortData: DataType[] = data;
-    if (age === "18+") {
-      sortData = sortData.filter((item) => !item.tags.includes("18-"));
-    }
-    if (price !== "") {
-      sortData = sortData.filter((item) =>
-        price === "free"
-          ? item.tags.includes("free")
-          : item.tags.includes("paid")
+    let filteredData: DataType[] = [...data];
+    if (age) {
+      filteredData = filteredData.filter(
+        (item) => !item.tags.includes(age === "18+" ? "18-" : "18+"),
       );
     }
-    if (search !== "") {
-      const searchResults = fuse.search(search);
-      const searchTitles = new Set(searchResults.map((r) => r.item.title));
-      sortData = sortData.filter((item) => searchTitles.has(item.title));
+    if (price) {
+      filteredData = filteredData.filter((item) =>
+        price === "free"
+          ? item.tags.includes("free")
+          : item.tags.includes("paid"),
+      );
     }
-    return sortData.sort(
-      (a, b) => parseInt(b.updated, 10) - parseInt(a.updated, 10)
-    );
+    if (search) {
+      const query = search.toLowerCase();
+      if (search.length < 3) {
+        filteredData = filteredData.filter(
+          (item) =>
+            item.title.toLowerCase().includes(query) ||
+            item.tags.some((tag) => tag.toLowerCase().startsWith(query)),
+        );
+      } else {
+        const fuse = new Fuse(filteredData, fuseOptions);
+        filteredData = fuse.search(search).map((r) => r.item);
+      }
+    }
+    if (!search) {
+      filteredData.sort(
+        (a, b) => parseInt(b.updated, 10) - parseInt(a.updated, 10),
+      );
+    }
+    return filteredData;
   }, [age, price, search]);
 
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>): void => {
@@ -128,7 +139,7 @@ export default function Page() {
               <p>
                 {createLink(
                   `attempt day ${day} puzzle`,
-                  `https://adventofcode.com/2025/day/${day}`
+                  `https://adventofcode.com/2025/day/${day}`,
                 )}
               </p>
             </AlertDescription>
@@ -136,7 +147,7 @@ export default function Page() {
         )}
 
         <section className="mb-8 space-y-3">
-          {/* <div className="flex gap-2">
+          <div className="flex gap-2">
             <Input
               type="text"
               placeholder="Search..."
@@ -157,7 +168,7 @@ export default function Page() {
             >
               Clear
             </Button>
-          </div> */}
+          </div>
           <div className="flex gap-2">
             <Select onValueChange={setAge} value={age}>
               <SelectTrigger className="w-28">
@@ -196,7 +207,7 @@ export default function Page() {
               Want to add one?{" "}
               {createLink(
                 "Submit a PR",
-                "https://github.com/itwilsonlu/iwishiknew/pulls"
+                "https://github.com/itwilsonlu/iwishiknew/pulls",
               )}
             </p>
           </div>

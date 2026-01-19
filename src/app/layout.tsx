@@ -1,11 +1,9 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import Script from "next/script";
 import { Analytics } from "@vercel/analytics/next";
 
 const inter = Inter({ subsets: ["latin"] });
-const { SCRIPT_ID, SCRIPT_SRC } = process.env;
 
 export const metadata: Metadata = {
   title: "I wish I knew",
@@ -20,11 +18,6 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <head>
-        {SCRIPT_SRC && SCRIPT_ID && (
-          <Script defer src={SCRIPT_SRC} data-website-id={SCRIPT_ID} />
-        )}
-      </head>
       <body className={inter.className}>
         {children}
         <Analytics />
